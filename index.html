@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Queue Simulator</title>
+    <style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1, h2 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5em;
+        }
+
+        button {
+            margin-right: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1em;
+        }
+
+        .printed-document {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f0f8ff; /* Light blue color */
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1em;
+        }
+
+        #message {
+            margin-top: 1%;
+            margin-bottom: 1%;
+            color: blue;
+        }
+
+        #images-container {
+            display: flex;
+            justify-content: space-around;
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        .img-container {
+            text-align: center;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+    <!-- Include the JetBrains Mono font from a CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fontsource-jetbrains-mono@3.15.1/css/webfont.css" />
+</head>
+<body>
+    <h1>Print Queue</h1>
+    <p>Default Doc contains 1 page</p>
+
+    <div id="message"></div>
+
+    <form onsubmit="submitForm(event)">
+        <button type="button" onclick="useSampleDocument()">Use Default Sample Document</button>
+
+        <label for="num_copies">Number of Copies:</label>
+        <input type="number" name="num_copies" id="num_copies" min="1" required>
+
+        <button type="submit">Submit Print Job</button>
+    </form>
+
+    <br>
+
+    <button onclick="processPrintQueue()">Process Print Queue</button>
+
+    <div id="printed-documents"></div>
+
+    <div id="images-container">
+        <div class="img-container">
+            <img src="path/to/your/image1.jpg" alt="Image 1">
+        </div>
+        <!-- Add more image containers as needed -->
+    </div>
+
+    <script>
+        function submitForm(event) {
+            event.preventDefault();
+            const numCopiesInput = document.getElementById('num_copies');
+            const numCopies = numCopiesInput.value;
+
+            if (numCopies > 0) {
+                const message = `You have selected ${numCopies} copy${numCopies > 1 ? 's' : ''}. The document has been placed in the queue to be printed in order.`;
+                displayMessage(message);
+            } else {
+                alert('Please enter a valid number of copies.');
+            }
+        }
+
+        function useSampleDocument() {
+            const numCopies = document.getElementById('num_copies').value;
+            const message = `default sample document (SampleDocument.pdf) with ${numCopies} copy${numCopies > 1 ? 's' : ''} submitted to the queue.`;
+            displayMessage(message);
+        }
+
+        function processPrintQueue() {
+            const printedDocuments = document.getElementById('printed-documents');
+            const numCopies = document.getElementById('num_copies').value;
+
+            if (numCopies > 0) {
+                const printedDocument = document.createElement('div');
+                printedDocument.className = 'printed-document';
+                printedDocument.innerHTML = `<p>Copy: ${numCopies}</p><p>Pages:</p><ul>${generatePageList(numCopies)}</ul>`;
+                printedDocuments.appendChild(printedDocument);
+
+                displayMessage('Print job completed. Done!');
+            } else {
+                displayMessage('No documents have been printed yet.');
+            }
+        }
+
+        function generatePageList(numPages) {
+            let pageList = '';
+            for (let i = 1; i <= numPages; i++) {
+                pageList += `<li style="color: green;">Page ${i}</li>`;
+            }
+            return pageList;
+        }
+
+        function displayMessage(message) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerText = message;
+            setTimeout(() => {
+                messageDiv.innerText = '';
+            }, 3000); // Clear message after 6 seconds
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
